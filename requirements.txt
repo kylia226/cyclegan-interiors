@@ -1,5 +1,5 @@
-numpy
-torch
-torchvision
-streamlit==1.39.0
+numpy<2
 pillow
+streamlit==1.39.0
+torch==2.4.1
+torchvision==0.19.1
