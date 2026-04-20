@@ -69,7 +69,6 @@ else:
             st.subheader("исходное изображение")
             st.image(image, use_column_width=True)
 
-
         if st.button("запустить перевод"):
             try:
                 with st.spinner("выполняю перевод..."):
@@ -78,6 +77,5 @@ else:
                 with col2:
                     st.subheader("результат")
                     st.image(result, use_column_width=True)
-
             except Exception as error:
                 st.error(f"не удалось выполнить инференс: {error}")
