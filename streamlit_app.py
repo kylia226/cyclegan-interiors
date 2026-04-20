@@ -59,6 +59,11 @@ if not Path(CHECKPOINT_PATH).exists():
 with st.spinner("загружаю модель..."):
     load_model()
 
+if "result_image" not in st.session_state:
+    st.session_state.result_image = None
+if "result_meta" not in st.session_state:
+    st.session_state.result_meta = None
+
 direction = st.radio(
     "направление перевода",
     ["modern -> rustic", "rustic -> modern"],
@@ -78,6 +83,11 @@ else:
     selected_name = st.selectbox("выберите пример интерьера", example_names)
     image = Image.open(EXAMPLES_DIR / selected_name).convert("RGB")
 
+    current_meta = (direction, selected_name)
+    if st.session_state.result_meta != current_meta:
+        st.session_state.result_image = None
+        st.session_state.result_meta = current_meta
+
     col1, col2 = st.columns(2)
 
     with col1:
@@ -87,10 +97,13 @@ else:
     if st.button("запустить перевод"):
         try:
             with st.spinner("выполняю перевод..."):
-                result = translate(image, direction)
-
-            with col2:
-                st.subheader("результат")
-                st.image(result, use_column_width=True)
+                st.session_state.result_image = translate(image, direction)
         except Exception as error:
             st.error(f"не удалось выполнить инференс: {error}")
+
+    with col2:
+        st.subheader("результат")
+        if st.session_state.result_image is None:
+            st.info("нажмите «запустить перевод», чтобы увидеть результат.")
+        else:
+            st.image(st.session_state.result_image, use_column_width=True)
