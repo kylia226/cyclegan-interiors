@@ -67,7 +67,8 @@ else:
         col1, col2 = st.columns(2)
         with col1:
             st.subheader("исходное изображение")
-            st.image(image, use_container_width=True)
+            st.image(image, use_column_width=True)
+
 
         if st.button("запустить перевод"):
             try:
@@ -76,6 +77,7 @@ else:
 
                 with col2:
                     st.subheader("результат")
-                    st.image(result, use_container_width=True)
+                    st.image(result, use_column_width=True)
+
             except Exception as error:
                 st.error(f"не удалось выполнить инференс: {error}")
